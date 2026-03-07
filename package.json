@@ -1,0 +1,14 @@
+{
+    "name": "sanjeevani-ai-monorepo",
+    "version": "1.0.0",
+    "description": "AI-Powered Healthcare Receptionist",
+    "private": true,
+    "scripts": {
+        "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+        "dev": "npx concurrently \"cd backend && node server.js\" \"cd frontend && npm run dev\"",
+        "build:frontend": "cd frontend && npm run build"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}

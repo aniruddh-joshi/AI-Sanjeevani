@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --primary: #0ea5e9;
+  --primary-dark: #0369a1;
+  --secondary: #14b8a6;
+  --accent: #f59e0b;
+}
+
+@theme {
+  --color-primary: #0ea5e9;
+  --color-primary-dark: #0369a1;
+  --color-secondary: #14b8a6;
+  --color-accent: #f59e0b;
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-text-main: #0f172a;
+  --color-text-muted: #64748b;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ── Global: Kill blinking text caret everywhere ── */
+* {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Re-enable for typing fields */
+input,
+textarea,
+[contenteditable] {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* Remove ugly blue click outline globally */
+*:focus {
+  outline: none;
+}
+
+/* Keep subtle outline only for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove default link underline */
+a {
+  text-decoration: none;
+}
+
+/* Prevent text I-beam cursor on static content */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+section,
+div {
+  cursor: default;
+}
+
+/* Restore pointer for interactive elements */
+a,
+button,
+input,
+textarea,
+select,
+label,
+[role="button"] {
+  cursor: pointer;
+}
+
+input,
+textarea {
+  cursor: text;
+}
+
+/* No blinking text caret on nav/buttons/sidebar */
+a,
+button,
+nav,
+aside,
+[role="button"] {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@layer utilities {
+  .glass-card {
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+}
