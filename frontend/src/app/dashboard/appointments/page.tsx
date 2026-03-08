@@ -47,7 +47,7 @@ export default function AppointmentsPage() {
 
     const fetchAppointments = async () => {
         setLoading(true);
-        const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000';
+        const API = process.env.NEXT_PUBLIC_API_URL || '';
         try {
             const res = await fetch(`${API}/api/appointments`);
             const data = await res.json();

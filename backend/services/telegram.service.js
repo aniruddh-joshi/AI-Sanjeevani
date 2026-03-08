@@ -439,11 +439,22 @@ bot.on('text', async (ctx) => {
     }
 });
 
-const startBot = () => {
-    bot.launch();
-    process.once('SIGINT', () => bot.stop('SIGINT'));
-    process.once('SIGTERM', () => bot.stop('SIGTERM'));
-    console.log("Sanjeevani AI Telegram Bot (v2.0) started...");
+const handleUpdate = async (update) => {
+    try {
+        await bot.handleUpdate(update);
+    } catch (err) {
+        console.error("Webhook Update Error:", err);
+    }
 };
 
-module.exports = { startBot };
+const setupWebhook = async (url) => {
+    try {
+        await bot.telegram.setWebhook(url);
+        console.log(`Telegram Webhook set to: ${url}`);
+    } catch (err) {
+        console.error("Failed to set Telegram Webhook:", err);
+        throw err;
+    }
+};
+
+module.exports = { bot, handleUpdate, setupWebhook };

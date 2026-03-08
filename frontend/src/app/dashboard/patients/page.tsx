@@ -24,7 +24,7 @@ export default function PatientsPage() {
 
     const fetchPatients = async () => {
         setLoading(true);
-        const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000';
+        const API = process.env.NEXT_PUBLIC_API_URL || '';
         try {
             const res = await fetch(`${API}/api/patients`);
             const data = await res.json();

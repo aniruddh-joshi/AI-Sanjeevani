@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const { setupSecurity } = require('./middleware/security');
 const { supabase } = require('./services/supabase.service');
-const { startBot } = require('./services/telegram.service');
+const { bot, handleUpdate, setupWebhook } = require('./services/telegram.service');
 const { logEvent } = require('./utils/logger');
 
 const app = express();
@@ -228,14 +228,42 @@ app.get('/api/chart-data', async (req, res) => {
     }
 });
 
-// Start Server
-const server = app.listen(PORT, '0.0.0.0', () => {
-    const addr = server.address();
-    console.log(`[SERVER] Sanjeevani AI v2.0 running on ${addr.address}:${addr.port}`);
-
+// 7. Telegram Webhook Endpoint
+app.post('/api/bot-webhook', async (req, res) => {
     try {
-        startBot();
-    } catch (err) {
-        console.error("Failed to start Telegram Bot:", err.message);
+        await handleUpdate(req.body);
+        res.status(200).send('OK');
+    } catch (error) {
+        console.error("Webhook HTTP Error:", error);
+        res.status(500).send('Error');
     }
 });
+
+// 8. Bot Initialization (Set Webhook)
+app.get('/api/init-bot', async (req, res) => {
+    const protocol = req.headers['x-forwarded-proto'] || 'http';
+    const host = req.headers['host'];
+    const webhookUrl = `${protocol}://${host}/api/bot-webhook`;
+
+    try {
+        await setupWebhook(webhookUrl);
+        res.json({ success: true, message: `Webhook set to ${webhookUrl}` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Start Server (Only if not in Netlify environment)
+if (!process.env.NETLIFY) {
+    const server = app.listen(PORT, '0.0.0.0', () => {
+        const addr = server.address();
+        console.log(`[SERVER] Sanjeevani AI v2.0 running on ${addr.address}:${addr.port}`);
+
+        // Use polling only for local development
+        bot.launch();
+        console.log("Telegram Bot started in POLLING mode (Local Dev)");
+    });
+}
+
+// Export for Netlify Functions
+module.exports = app;

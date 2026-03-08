@@ -34,7 +34,7 @@ export default function AppointmentStatusPage() {
         setError('');
 
         try {
-            const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000';
+            const API = process.env.NEXT_PUBLIC_API_URL || '';
             const res = await fetch(`${API}/api/appointment/${apptId.trim().toUpperCase()}`);
             if (!res.ok) {
                 setError('No appointment found with this ID. Please check and try again.');

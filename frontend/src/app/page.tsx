@@ -16,15 +16,13 @@ const SPEC_MAP: Record<string, { emoji: string; color: string; border: string; a
 };
 const defaultSpec = SPEC_MAP['Other'];
 
-async function getDoctors() {
-  try {
-    const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000';
-    const res = await fetch(`${API}/api/doctors`, { cache: 'no-store' });
-    if (!res.ok) return [];
-    return await res.json();
+const API = process.env.NEXT_PUBLIC_API_URL || '';
+const res = await fetch(`${API}/api/doctors`, { cache: 'no-store' });
+if (!res.ok) return [];
+return await res.json();
   } catch {
-    return [];
-  }
+  return [];
+}
 }
 
 export default async function LandingPage() {
