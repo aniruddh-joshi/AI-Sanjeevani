@@ -433,7 +433,7 @@ bot.on('text', async (ctx) => {
     } catch (error) {
         console.error("Bot Error:", error);
         await ctx.reply(
-            'Oops! Thodi technical problem aa gayi 😔\nPlease thodi der baad phir try karein.\n\n_Aap niche se koi option bhi choose kar sakte hain:_',
+            `Oops! Thodi technical problem aa gayi 😔\nError details: ${error.message}\n\nPlease thodi der baad phir try karein.`,
             { parse_mode: 'Markdown', ...mainMenuKeyboard }
         );
     }
