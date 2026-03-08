@@ -1,6 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
+import { useState, useEffect } from 'react';
 
 const SPEC_MAP: Record<string, { emoji: string; color: string; border: string; accent: string }> = {
   'Dentist': { emoji: '🦷', color: 'from-sky-50 to-blue-50', border: 'border-blue-100', accent: 'text-blue-600' },
@@ -16,19 +19,16 @@ const SPEC_MAP: Record<string, { emoji: string; color: string; border: string; a
 };
 const defaultSpec = SPEC_MAP['Other'];
 
-async function getDoctors() {
-  try {
-    const API = process.env.NEXT_PUBLIC_API_URL || '';
-    const res = await fetch(`${API}/api/doctors`, { cache: 'no-store' });
-    if (!res.ok) return [];
-    return await res.json();
-  } catch {
-    return [];
-  }
-}
+export default function LandingPage() {
+  const [doctors, setDoctors] = useState<{ id: string; name: string; specialization: string; bio: string | null }[]>([]);
 
-export default async function LandingPage() {
-  const doctors = await getDoctors();
+  useEffect(() => {
+    fetch('/api/doctors')
+      .then(res => res.json())
+      .then(data => setDoctors(data || []))
+      .catch(() => setDoctors([]));
+  }, []);
+
   return (
     <div className="min-h-screen bg-white text-slate-900">
 
