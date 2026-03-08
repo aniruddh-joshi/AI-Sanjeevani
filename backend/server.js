@@ -229,15 +229,16 @@ app.get('/api/chart-data', async (req, res) => {
 });
 
 // 7. Telegram Webhook Endpoint
-app.post('/api/bot-webhook', async (req, res) => {
-    try {
-        await handleUpdate(req.body);
-        res.status(200).send('OK');
-    } catch (error) {
-        console.error("Webhook HTTP Error:", error);
-        res.status(500).send('Error');
-    }
+app.post('/api/bot-webhook', (req, res) => {
+    // Acknowledge Telegram immediately to prevent timeout retries
+    res.status(200).send('OK');
+
+    // Process the update async in background
+    handleUpdate(req.body).catch(err => {
+        console.error("Background Webhook Processing Error:", err);
+    });
 });
+
 
 // 8. Bot Initialization (Set Webhook)
 app.get('/api/init-bot', async (req, res) => {
