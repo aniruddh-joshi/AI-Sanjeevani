@@ -228,23 +228,13 @@ app.get('/api/chart-data', async (req, res) => {
     }
 });
 
-// 7. Telegram Webhook Endpoint
-app.post('/api/bot-webhook', async (req, res) => {
-    try {
-        await handleUpdate(req.body);
-        res.status(200).send('OK');
-    } catch (error) {
-        console.error("Webhook HTTP Error:", error);
-        res.status(500).send('Error');
-    }
-});
-
-
 // 8. Bot Initialization (Set Webhook)
 app.get('/api/init-bot', async (req, res) => {
     const protocol = req.headers['x-forwarded-proto'] || 'http';
     const host = req.headers['host'];
-    const webhookUrl = `${protocol}://${host}/api/bot-webhook`;
+
+    // Explicitly point to the Netlify Background Function for 15-minute timeout allowance
+    const webhookUrl = `${protocol}://${host}/.netlify/functions/bot-background`;
 
     try {
         await setupWebhook(webhookUrl);
