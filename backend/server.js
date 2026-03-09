@@ -250,9 +250,8 @@ if (!process.env.NETLIFY) {
         const addr = server.address();
         console.log(`[SERVER] Sanjeevani AI v2.0 running on ${addr.address}:${addr.port}`);
 
-        // Use polling only for local development
-        bot.launch();
-        console.log("Telegram Bot started in POLLING mode (Local Dev)");
+        console.log("⚠️ Telegram Bot Polling (bot.launch) is disabled to protect the live Netlify Webhook.");
+        console.log("If testing bot locally, use ngrok and trigger via webhook, or use a separate Bot Token.");
     });
 }
 
